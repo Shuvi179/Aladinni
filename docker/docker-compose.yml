@@ -1,0 +1,33 @@
+version: "3.9"
+networks:
+  refelina_network:
+    driver: bridge
+services:
+  db:
+    image: mysql
+    container_name: refelina_database
+    restart: on-failure
+    cap_add:
+      - SYS_NICE
+    networks:
+      - refelina_network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: refelina
+    ports:
+    - 3306:3306
+  anibelika:
+    container_name: refelina
+    image: refelina
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/refelina?createDatabaseIfNotExist=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SERVER_PORT=3000
+    networks:
+      - refelina_network
+    ports:
+    - 3000:3000
+    restart: on-failure
+    depends_on:
+      - db
