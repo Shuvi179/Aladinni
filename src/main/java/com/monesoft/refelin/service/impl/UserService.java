@@ -3,36 +3,35 @@ package com.monesoft.refelin.service.impl;
 import com.monesoft.refelin.entity.User;
 import com.monesoft.refelin.exception.DuplicateEmailException;
 import com.monesoft.refelin.repository.UserRepository;
-import com.monesoft.refelin.service.contract.UserService;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+@RequiredArgsConstructor
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findUserByEmail(email);
-        if (Objects.isNull(user)) {
+    public User loadUserByUsername(String email) {
+        Optional<User> user = userRepository.findUserByEmail(email);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("No user with email: " + email);
         }
-        return user;
+        return user.get();
     }
 
     @Transactional
-    @Override
     public User registerUser(User user) {
         validateRegisterUser(user);
+        return userRepository.save(user);
+    }
+
+    public User updateUser(User user) {
         return userRepository.save(user);
     }
 

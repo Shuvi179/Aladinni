@@ -12,17 +12,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "companies")
-public class Company {
+@Table(name = "required_informations")
+public class EmployeeRequiredInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String name;
-
-    @Column
-    private String description;
+    @Column(nullable = false)
+    private Boolean pricingRuleConfirm;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")

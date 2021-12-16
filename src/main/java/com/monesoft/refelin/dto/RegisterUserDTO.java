@@ -21,5 +21,4 @@ public class RegisterUserDTO {
     @NotNull
     private String fullName;
     private boolean isHR;
-    private CompanyInfoDTO companyInfo;
 }

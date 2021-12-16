@@ -1,8 +1,7 @@
 package com.monesoft.refelin.security.filter;
 
-import com.monesoft.refelin.entity.User;
 import com.monesoft.refelin.security.jwt.TokenProvider;
-import com.monesoft.refelin.service.contract.UserService;
+import com.monesoft.refelin.service.impl.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

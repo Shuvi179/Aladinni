@@ -15,7 +15,5 @@ public class CompanyInfoDTO {
     @NotNull
     @NotEmpty
     private String name;
-    @NotNull
-    @NotEmpty
     private String description;
 }

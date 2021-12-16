@@ -4,29 +4,23 @@ import com.monesoft.refelin.entity.Company;
 import com.monesoft.refelin.entity.User;
 import com.monesoft.refelin.exception.PermissionException;
 import com.monesoft.refelin.repository.CompanyRepository;
-import com.monesoft.refelin.service.contract.CompanyService;
 import com.monesoft.refelin.util.UserUtils;
 import com.monesoft.refelin.util.ValidateUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class CompanyServiceImpl implements CompanyService {
+@RequiredArgsConstructor
+public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
-    }
-
-    @Override
     public Company addNewCompany(Company company) {
         return companyRepository.save(company);
     }
 
-    @Override
     public Company updateCompany(Company company) {
         User user = UserUtils.getCurrentUser();
         Company companyEntity = validateCompanyAccess(company, user);
@@ -35,7 +29,6 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.save(companyEntity);
     }
 
-    @Override
     public Company getCompany(Long id) {
         return validateCompanyExist(companyRepository.findById(id));
     }

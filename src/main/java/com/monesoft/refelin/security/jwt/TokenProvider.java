@@ -1,5 +1,6 @@
 package com.monesoft.refelin.security.jwt;
 
+import com.monesoft.refelin.entity.User;
 import io.jsonwebtoken.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,15 +57,23 @@ public class TokenProvider implements Serializable {
     }
 
     public String generateToken(Authentication authentication) {
-        String authorities = authentication.getAuthorities().stream()
+        return generateToken(authentication.getName(), authentication.getAuthorities());
+    }
+
+    public String generateToken(User user) {
+        return generateToken(user.getEmail(), user.getAuthorities());
+    }
+
+    private String generateToken(String name, Collection<? extends GrantedAuthority> authorities) {
+        String authoritiesString = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
+                .setSubject(name)
+                .claim(AUTHORITIES_KEY, authoritiesString)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY*1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
                 .compact();
     }

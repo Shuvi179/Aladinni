@@ -3,24 +3,19 @@ package com.monesoft.refelin.controller;
 import com.monesoft.refelin.dto.RegisterUserDTO;
 import com.monesoft.refelin.dto.UserInfoDTO;
 import com.monesoft.refelin.dto.UserLoginDTO;
-import com.monesoft.refelin.manager.contract.UserManager;
+import com.monesoft.refelin.manager.impl.UserManager;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     private final UserManager userManager;
-
-    public UserController(UserManager userManager) {
-        this.userManager = userManager;
-    }
 
     @PostMapping("/login")
     @Operation(summary = "Login in application. Return a JWT token")
